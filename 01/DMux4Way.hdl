@@ -1,0 +1,48 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux4Way.hdl
+
+/**
+ * 4-way demultiplexor:
+ * {a, b, c, d} = {in, 0, 0, 0} if sel == 00
+ *                {0, in, 0, 0} if sel == 01
+ *                {0, 0, in, 0} if sel == 10
+ *                {0, 0, 0, in} if sel == 11
+ */
+
+/**
+ * Idea:
+ * The truth table is as follows:
+ * in | sel1 | sel0 | a | b | c | d
+ *  0    0      0     0   0   0   0
+ *  0    0      1     0   0   0   0
+ *  0    1      0     0   0   0   0
+ *  0    1      1     0   0   0   0
+ *  1    0      0     1   0   0   0
+ *  1    0      1     0   1   0   0
+ *  1    1      0     0   0   1   0
+ *  1    1      1     0   0   0   1
+ */
+
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+    // Put your code here:
+	Not(in=sel[0], out=sel00);
+	Not(in=sel[1], out=sel10);
+	
+	And(a=in, b=sel10, out=a1);
+	And(a=a1, b=sel00, out=a);
+	
+	And(a=in, b=sel10, out=b1);
+	And(a=b1, b=sel[0], out=b);
+	
+	And(a=in, b=sel[1], out=c1);
+	And(a=c1, b=sel00, out=c);
+	
+	And(a=in, b=sel[0], out=d1);
+	And(a=d1, b=sel[1], out=d);
+}

@@ -1,0 +1,25 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/demo/Xor.hdl
+
+/**
+ *  Exclusive-or gate: true if either a is true and b is false, or
+ *  a is false and b is true; false otherwise.
+ *  QUESTION: how can the simulator execute this program properly without
+ *  HDL implementations of the underlying Not, And, and Or chip-parts?
+ *  Answer: since the demo folder contains no Not.hdl, And.hdl and Or.hdl
+ *  files, the simulator reverts to using their built-in implementations.
+ */
+
+CHIP Xor {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    Not (in=a, out=nota);
+    Not (in=b, out=notb);
+    And (a=a, b=notb, out=x);
+    And (a=nota, b=b, out=y);
+    Or (a=x, b=y, out=out);
+}
