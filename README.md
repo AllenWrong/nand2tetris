@@ -21,6 +21,7 @@ Coursera课程：https://www.coursera.org/learn/build-a-computer/home/welcome
 - xor （异或）
 - mux mux16 mux4way16 mux8way16 （2选1选择器，16位2选1选择器，16位4选1选择器，16位8选1选择器）
 - dmux dmux4way dmux8way （解复用器，解4路复用，解8路复用）
+
 2、布尔运算<br/>
 3、时序逻辑<br/>
 4、机器语言<br/>
