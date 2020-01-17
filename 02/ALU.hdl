@@ -70,6 +70,6 @@ CHIP ALU {
    Or16Way(in=in, out=total);
    Mux(a=true, b=false, sel=total, out=zr);
    
-   // ng
+   // ng 
    IsNg(in=in, out=ng);
 }
