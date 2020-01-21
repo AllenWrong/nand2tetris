@@ -24,8 +24,14 @@ CSDN关于实现的具体介绍：https://blog.csdn.net/qq_41634283/article/deta
 - mux mux16 mux4way16 mux8way16 （2选1选择器，16位2选1选择器，16位4选1选择器，16位8选1选择器）
 - dmux dmux4way dmux8way （解复用器，解4路复用，解8路复用）
 
-2、布尔运算<br/>
-3、时序逻辑<br/>
+#### 2、布尔运算<br/>
+
+- 16位加法器，半加器，全加器
+- 增量器
+- ALU
+
+#### 3、时序逻辑<br/>
+
 - 1bit寄存器，16bit寄存器
 - RAM8，RAM64，RAM512，RAM4K，RAM16K
 - 程序计数器PC

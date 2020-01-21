@@ -9,12 +9,15 @@ import java.util.Scanner;
  * 
  * @author Thingcor
  * This is the Parser module, represented by the Parser class. 
+ * One parser class represented a scan.
  */
 public class Parser {
 	/** the file will be parsed*/
 	File file;
 	Scanner scanner;
 	String currentCommand;
+	/** count the address of the instructions*/
+	int address = 0;
 	
 	/** Constructor*/
 	public Parser(File file, FileInputStream fiStream) {
@@ -43,6 +46,10 @@ public class Parser {
 			do{
 				this.currentCommand = this.scanner.nextLine();
 			}while(!getCommand());
+			// when we get a a-command or c-command, let the address++;
+			if(this.commandType().equals(CommandType.A_COMMAND) || this.commandType().equals(CommandType.C_COMMAND)) {
+				this.address++;
+			}
 		}else {
 			this.scanner.close();
 		}
@@ -102,18 +109,70 @@ public class Parser {
 	}
 	
 	/**
+	 * Judge whether the symbol is integer symbol
+	 * @param symbol
+	 * @return
+	 */
+	public boolean isDigit(String symbol) {
+		for(int i = 0;i<symbol.length();i++) {
+			if(!Character.isDigit(symbol.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Padding the string to get the 15 bit address
+	 * @param str
+	 * @return
+	 */
+	public String paddingZero(String str) {
+		while(str.length()<=15) {
+			str="0"+str;
+		}
+		return str;
+	}
+	
+	/**
 	 * get the symbol or the decimal address string.
 	 * @return  null
 	 * 			if the command is c command or unknown command 
 	 */
 	public String sysmbol() {
+		/**
+		 * basically, whatever the command is a-command or l-command, if the symbol is represented
+		 * by address, we return the binary form of the address, if the symbol is represented by
+		 * string, we return the string. 
+		 * When we first scan the file, if we get the binary string of the address we don't do 
+		 * anything, if we get the string symbol we add the string and it's binary address to the 
+		 * symbol table.
+		 * When we second scan the file, if we get the binary string of the address we translate it
+		 * , if we get the string symbol we get it's address from hash table. 
+		 */
 		if (commandType().equals(CommandType.A_COMMAND)) {
 			String command = this.currentCommand;
-			return command.substring(1, command.length());
+			String subStr =  command.substring(1, command.length());
+			// if the a-command is represented by address, we do the following action
+			if(isDigit(subStr)) {
+				Long address = Long.parseLong(subStr);
+				String addressStr = Long.toBinaryString(address);
+				return paddingZero(addressStr);
+			}else {
+				return subStr;
+			}
 		}
 		if(commandType().equals(CommandType.L_COMMAND)) {
 			String command = this.currentCommand;
-			return command.substring(1, command.length()-1);
+			String subStr = command.substring(1, command.length()-1);
+			// if the L-command is represented by address, we do the following action
+			if(isDigit(subStr)) {
+				Long address = Long.parseLong(subStr);
+				String addressStr = Long.toBinaryString(address);
+				return paddingZero(addressStr);
+			}else {
+				return subStr;
+			}
 		}
 		return null;
 	}
