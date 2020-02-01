@@ -1,0 +1,20 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/08/FunctionCalls/StaticsTest/Class2.vm
+
+// Stores two supplied arguments in static[0] and static[1].
+function Class2.set 0
+push argument 0
+pop static 0
+push argument 1
+pop static 1
+push constant 0
+return
+
+// Returns static[0] - static[1].
+function Class2.get 0
+push static 0
+push static 1
+sub
+return

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>NestedCall.tst &mdash; Nand2Tetris Calling Convention Test</title>
+	<style type="text/css">
+	.code {font-family:"Courier New", Courier, monospace; font-size:90%;}	
+	pre {margin-left:2em;}
+	</style>
+</head>
+<body>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h3>Synopsis</h3>
+<b>NestedCall.tst</b> is an intermediate test (in terms of complexity) intended to be used between the SimpleFunction and 
+FibonacciElement tests. It may be useful when SimpleFunction passes but FibonacciElement fails or crashes. NestedCall also 
+tests several requirements of the Function Calling Protocol that are not verified by the other 
+supplied tests. NestedCall can be used with or without the VM bootstrap code.
+<p>
+<b>NestedCallVME.tst</b> runs the same test on the VM Emulator.
+<p>
+<b>The NestedCall</b> tests and supporting documentation were written by Mark Armbrust.
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h3>Test Structure</h3>
+<h4>Startup</h4>
+NestedCall is implemented entirely within the Sys.vm file.  The first function in Sys.vm is 
+Sys.init().  This allows it to be used before the bootstrap code has been added to the VM Translator 
+since there will be no file processing order issues.
+<p>
+NestedCall loads Sys.asm, sets up the stack to simulate the bootstrap's call to Sys.init(), then 
+begins execution at the beginning of Sys.asm.  If the bootstrap is not present, the program begins 
+running with Sys.init() since it is the first function in Sys.vm.
+<p>
+If Sys.asm includes the bootstrap, the bootstrap will (re)initialize the stack and call Sys.init(), 
+so the test should see the same environment either way it gets to Sys.init().
+<p>
+The test setup also initializes the 
+
+<h4>Sys.init()</h4>
+
+<span class="code">THIS</span> and <span class="code">THAT</span> are set to known values so that context save and restore can be tested.
+<p>
+Sys.init() calls Sys.main() and stores the return value in <span class="code">temp 1</span>.  This tests call to and 
+return from a function with no arguments.
+
+<h4>Sys.main()</h4>
+Sys.init() allocates 5 local variables.  It sets <span class="code">local 1</span>, <span class="code">local 2</span> and 
+<span class="code">local 3</span>.  <span class="code">local 0</span> and <span class="code">local 4</span> are intentionally not set. 
+<p> 
+<span class="code">THIS</span> and <span class="code">THAT</span> are changed so that context save and restore can be tested.
+<p>
+Sys.main() calls Sys.add12(123) and stores the return value in <span class="code">temp 0</span>.  This tests call to and 
+return from a function with arguments.
+<p>
+After Sys.add12() returns, Sys.main() sums <span class="code">local 0</span> through <span class="code">local 4</span> and returns the 
+result.  This tests that the local segment was properly allocated on the stack and that the local 
+variables were not overwritten by the call to Sys.main().  It also tests that <span class="code">local 0</span> and 
+<span class="code">local 4</span> were properly initialized to 0.
+
+<h4>Sys.add12()</h4>
+
+<span class="code">THIS</span> and <span class="code">THAT</span> are set to known values so that context save and restore can be tested.
+<p>
+Returns <span class="code">argument 0</span> plus 12.
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h3>Test Coverage</h3>
+
+<p style="margin-left:1em; text-indent:-1em;">
+Functions with no arguments return to correct RIP (Return Instruction Point) with correct return value on stack.<br>
+This can fail if the RIP is not correctly pushed on the stack by the calling code, or if the returning
+code does not store the RIP in a temporary register before overwriting it with the return value.
+
+<p style="margin-left:1em; text-indent:-1em;">
+Functions with arguments return to correct RIP with correct return value on stack.<br>
+This can fail if it is assumed that <span class="code">ARG</span> points to the RIP.
+
+<p style="margin-left:1em; text-indent:-1em;">
+Functions with local variables allocate space on the stack for the local variables.<br>
+This can fail if the function prologue is not written or if the SP is not updated after zeroing 
+the local variables.
+
+<p style="margin-left:1em; text-indent:-1em;">
+All local variables are initialized to 0.<br>
+Common errors are to forget this completely, or for the zeroing loop to be off by one.
+
+<p style="margin-left:1em; text-indent:-1em;">
+<span class="code">THIS</span> and <span class="code">THAT</span> are correctly retained across function calls. Looking ahead, in Project 9 you will be asked to write a simple computer game in the high-level Jack language. You can run your game (following compilation) on the supplied VM Emulator. But, if you choose to translate the VM code that the compiler generates using <em>your</em> VM Translator, then code like 
+"<span class="code">push THIS</span>, <span class="code">push THAT</span> ... <span class="code">pop THIS</span>, <span class="code">pop THAT</span>" can cause some interesting failures!
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h3>Debugging</h3>
+These comments assume that your VM translator has passed the SimpleFunction test.
+<p>
+If <span class="code">RAM[0]</span> is incorrect, you have a stack skew.  More data was pushed onto the stack by 
+<span class="code">call</span> than was popped by <span class="code">return</span>, or vice versa.  See <i>debugging with 
+breakpoints</i> later in this section.
+<p>
+If one or more of <span class="code">RAM[1]</span> through <span class="code">RAM[4]</span> is incorrect, the <span class="code">LCL</span>, 
+<span class="code">ARG</span>, <span class="code">THIS</span> and <span class="code">THAT</span> pointers are not being correctly saved or restored.  
+Most likely problem is when they are being saved; the SimpleFunction test verified that 
+<span class="code">return</span> restored them correctly.
+<p>
+If <span class="code">RAM[5]</span> is incorrect there may be a problem with setting up the <span class="code">ARG</span> pointer.  
+<p>
+If <span class="code">RAM[4]</span> is incorrect and <span class="code">RAM[5]</span> is correct, there may be a problem with 
+allocation or initialization of local variables.
+
+<h4>Debugging with breakpoints</h4>
+
+To find tough bugs you can use the "breakpoint" facility in the CPU Emulator (red flag button).  
+You can use breakpoints to have you program stop when it gets to a particular RAM address.  For 
+example:<br>
+&emsp;&bull;&ensp;load the NestedCall.tst file,<br>
+&emsp;&bull;&ensp;set a PC breakpoint at the ROM address for <span class="code">(Sys.main)</span>,<br>
+&emsp;&bull;&ensp;hit the run button.<br>
+When the CPU Emulator stops at the breakpoint you can inspect the RAM to check the stack and pointers values.
+(If the breakpoint isn't hit, you will need to to single-step debug through 
+your calling code to see why it didn't get there.)
+<p>
+Other useful places to set breakpoints are the entry points to the other functions and at the 
+first and final instructions generated for <span class="code">return</span> commands.
+<p>
+<a href="NestedCallStack.html">NestedCallStack.html</a> shows the expected stack values at various points 
+during the test.
+
+<h4>Finding ROM address in your ASM code</h4>
+It is not easy to find the ROM locations where you want to set breakpoints, because there is no 
+one-to-one correspondence between the ASM file line numbers and the ROM addresses. This is made even more 
+difficult because the supplied CPU Emulator does not display the (LABELS) in its ROM panel.
+<p>
+There are two things that you can do to make this easier.
+<p>
+<h5>Modify your assembler to generate a listing file.</h5>
+A listing file shows all the ASM source lines, including comments, as well as the ROM addresses and 
+the values of the labels and the instructions. For example, here is a snippet of a listing file generated by an assembler written by Mark Armbrust:
+<pre>
+   20    16      @i      // i -= 1
+   21  FC88      M=M-1
+             
+   22  FC10      D=M     // if i > 0
+   23     6      @LOOP
+   24  E301      D;JGT   //      goto LOOP
+             
+   25        (STOP)
+   25    25      @STOP
+   26  EA87      0;JMP
+
+Data Symbols
+
+   16 D  i
+
+Code Symbols
+
+    6 C  LOOP
+   17 C  SKIP
+   25 C  STOP
+</pre>
+For the Nand2Tetris environment, it is most useful to list the ROM addresses and A-instruction 
+values in decimal.  In the above snippet, the C-instruction values are 
+listed in hexadecimal.
+<p>
+The list file is generated during pass 2 of the Assembler, parallel to generating the .hack file.  To 
+make it easier to handle blank and comment only lines, Mark has Parser.commandType() return 
+NO_COMMAND for source lines with no command. Mark also added Parser.sourceLine() that returns the 
+unmodified source line.
+<p>
+<h5>Have your VM Translator write the VM source lines as comments in the ASM output.</h5>
+For example:
+<pre>
+    // label LOOP
+(Sys.init$LOOP)
+    // goto LOOP
+@Sys.init$LOOP
+0;JMP
+    //
+    // // Sys.main()
+    // 
+    // // Sets locals 1, 2 and 3, leaving locals 0 and 4 unchanged to test
+    // // default local initialization to 0.  (RAM set to -1 by test setup.)
+    // // Calls Sys.add12(123) and stores return value (135) in temp 0.
+    // // Returns local 0 + local 1 + local 2 + local 3 + local 4 (456) to confirm
+    // // that locals were not mangled by function call.
+    // 
+    // function Sys.main 5
+(Sys.main)
+@5
+D=-A
+($3)
+@SP
+</pre>
+Note that comments in the VM source become double comments. Looking ahead, in Project 11 you will be asked to write a compiler for the Jack language. If your compiler will write the Jack source lines as comments in the 
+generated VM files, this convention will be quite useful.
+
+</body>
+</html>

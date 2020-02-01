@@ -1,0 +1,15 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/08/FunctionCalls/FibonacciElement/Sys.vm
+
+// Pushes a constant, say n, onto the stack, and calls the Main.fibonacii
+// function, which computes the n'th element of the Fibonacci series.
+// Note that by convention, the Sys.init function is called "automatically" 
+// by the bootstrap code.
+
+function Sys.init 0
+push constant 4
+call Main.fibonacci 1   // computes the 4'th fibonacci element
+label WHILE
+goto WHILE              // loops infinitely
