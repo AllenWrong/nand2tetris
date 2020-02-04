@@ -1,0 +1,19 @@
+function Main.main 1
+push constant 5
+push constant 0
+call List.new 2
+pop local 0
+push constant 2
+push constant 3
+push local 0
+call List.new 2
+call List.new 2
+pop local 0
+push local 0
+call List.print 1
+pop temp 0
+push local 0
+call List.dispose 1
+pop temp 0
+push constant 0
+return

@@ -1,0 +1,116 @@
+function Fraction.new 0
+push constant 2
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push pointer 0
+call Fraction.reduce 1
+pop temp 0
+push pointer 0
+return
+function Fraction.reduce 1
+push argument 0
+pop pointer 0
+push this 0
+push this 1
+call Fraction.gcd 2
+pop local 0
+push local 0
+push constant 1
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push local 0
+call Math.divide 2
+pop this 0
+push this 1
+push local 0
+call Math.divide 2
+pop this 1
+label IF_FALSE0
+push constant 0
+return
+function Fraction.getNumerator 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Fraction.getDenominator 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Fraction.plus 1
+push argument 0
+pop pointer 0
+push this 0
+push argument 1
+call Fraction.getDenominator 1
+call Math.multiply 2
+push argument 1
+call Fraction.getNumerator 1
+push this 1
+call Math.multiply 2
+add
+pop local 0
+push local 0
+push this 1
+push argument 1
+call Fraction.getDenominator 1
+call Math.multiply 2
+call Fraction.new 2
+return
+function Fraction.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Fraction.print 0
+push argument 0
+pop pointer 0
+push this 0
+call Output.printInt 1
+pop temp 0
+push constant 1
+call String.new 1
+push constant 47
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push this 1
+call Output.printInt 1
+pop temp 0
+push constant 0
+return
+function Fraction.gcd 1
+label WHILE_EXP0
+push argument 1
+push constant 0
+eq
+not
+not
+if-goto WHILE_END0
+push argument 0
+push argument 1
+push argument 0
+push argument 1
+call Math.divide 2
+call Math.multiply 2
+sub
+pop local 0
+push argument 1
+pop argument 0
+push local 0
+pop argument 1
+goto WHILE_EXP0
+label WHILE_END0
+push argument 0
+return
