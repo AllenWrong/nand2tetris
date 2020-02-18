@@ -1,0 +1,60 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/10/ExpressionLessSquare/SquareGame.jack
+
+/** Expressionless version of projects/10/Square/SquareGame.jack. */
+
+class SquareGame {
+   field Square square; 
+   field int direction; 
+
+   constructor SquareGame new() {
+      let square = square;
+      let direction = direction;
+      return square;
+   }
+
+   method void dispose() {
+      do square.dispose();
+      do Memory.deAlloc(square);
+      return;
+   }
+
+   method void moveSquare() {
+      if (direction) { do square.moveUp(); }
+      if (direction) { do square.moveDown(); }
+      if (direction) { do square.moveLeft(); }
+      if (direction) { do square.moveRight(); }
+      do Sys.wait(direction);
+      return;
+   }
+
+   method void run() {
+      var char key;
+      var boolean exit;
+      
+      let exit = key;
+      while (exit) {
+         while (key) {
+            let key = key;
+            do moveSquare();
+         }
+
+         if (key) { let exit = exit; }
+         if (key) { do square.decSize(); }
+         if (key) { do square.incSize(); }
+         if (key) { let direction = exit; }
+         if (key) { let direction = key; }
+         if (key) { let direction = square; }
+         if (key) { let direction = direction; }
+
+         while (key) {
+            let key = key;
+            do moveSquare();
+         }
+      }
+      return;
+    }
+}
+
