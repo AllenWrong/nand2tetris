@@ -1,0 +1,82 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/11/ConvertToBin/Main.jack
+
+/**
+ * Unpacks a 16-bit number into its binary representation:
+ * Takes the 16-bit number stored in RAM[8000] and stores its individual 
+ * bits in RAM[8001..8016] (each location will contain 0 or 1).
+ * Before the conversion, RAM[8001]..RAM[8016] are initialized to -1.
+ * 
+ * The program should be tested as follows:
+ * 1) Load the program into the supplied VM emulator
+ * 2) Put some value in RAM[8000]
+ * 3) Switch to "no animation"
+ * 4) Run the program (give it enough time to run)
+ * 5) Stop the program
+ * 6) Check that RAM[8001]..RAM[8016] contains the correct binary result, and
+ *    that none of these memory locations contains -1.
+ */
+class Main {
+    
+    /**
+     * Initializes RAM[8001]..RAM[8016] to -1,
+     * and converts the value in RAM[8000] to binary.
+     */
+    function void main() {
+	    var int value;
+        do Main.fillMemory(8001, 16, -1); // sets RAM[8001]..RAM[8016] to -1
+        let value = Memory.peek(8000);    // reads a value from RAM[8000]
+        do Main.convert(value);           // performs the conversion
+        return;
+    }
+    
+    /** Converts the given decimal value to binary, and puts 
+     *  the resulting bits in RAM[8001]..RAM[8016]. */
+    function void convert(int value) {
+    	var int mask, position;
+    	var boolean loop;
+    	
+    	let loop = true;
+    	while (loop) {
+    	    let position = position + 1;
+    	    let mask = Main.nextMask(mask);
+    	
+    	    if (~(position > 16)) {
+    	
+    	        if (~((value & mask) = 0)) {
+    	            do Memory.poke(8000 + position, 1);
+       	        }
+    	        else {
+    	            do Memory.poke(8000 + position, 0);
+      	        }    
+    	    }
+    	    else {
+    	        let loop = false;
+    	    }
+    	}
+    	return;
+    }
+ 
+    /** Returns the next mask (the mask that should follow the given mask). */
+    function int nextMask(int mask) {
+    	if (mask = 0) {
+    	    return 1;
+    	}
+    	else {
+	    return mask * 2;
+    	}
+    }
+    
+    /** Fills 'length' consecutive memory locations with 'value',
+      * starting at 'startAddress'. */
+    function void fillMemory(int startAddress, int length, int value) {
+        while (length > 0) {
+            do Memory.poke(startAddress, value);
+            let length = length - 1;
+            let startAddress = startAddress + 1;
+        }
+        return;
+    }
+}

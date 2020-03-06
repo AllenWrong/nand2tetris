@@ -1,0 +1,24 @@
+1、【关于编译器的一点说明】
+下面的代码是我改写的编译表达式的伪代码。视频或者课程中给出的关于编译表达式的算法是正确的，但是它那个算法并不是以字元的
+方式给出的，所以我在下面用字元的方式改写了一下那个算法。并且在已有的所有的jack程序编译中表现的良好，测试结果都正确。
+
+/****************************************************************************/
+compileExp(){
+	compileTerm(){
+		if term is number then push n;
+		if term is variable then push variable;
+		if term is variable and head is op 
+			then write variable putback(op) and return;
+		if term is op exp then compileExp, write op;
+		if term is subroutineCall then write expressionList,write call;
+	}
+	
+	while(has(op term)){
+		compileOp;
+		compileTerm();
+	}
+}
+/****************************************************************************/
+
+2、【关于编译器的一些约束】
+  本编译器要求方法名一定要以小写字母开头，类名首字母一定要大写。
