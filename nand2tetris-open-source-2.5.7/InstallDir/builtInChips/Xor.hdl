@@ -1,0 +1,16 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: tools/builtIn/Xor.hdl
+
+/**
+ *  Exclusive-or gate.  out = a xor b.
+ */
+
+CHIP Xor {
+
+    IN  a, b;
+    OUT out;
+
+    BUILTIN Xor;
+}

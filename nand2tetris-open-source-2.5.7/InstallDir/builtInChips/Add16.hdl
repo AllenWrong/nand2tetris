@@ -1,0 +1,19 @@
+// This file is part of the materials accompanying the book
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: tools/builtIn/Add16.hdl
+
+/**
+ * 16-bit integer adder.  out = a + b where a,b are 16-bit 
+ * 2's complement representations of integers.  Overflow is 
+ * neither detected nor handled.
+ */
+
+CHIP Add16 {
+
+    IN  a[16], b[16];
+    OUT out[16];
+
+    BUILTIN Add16;
+}
+

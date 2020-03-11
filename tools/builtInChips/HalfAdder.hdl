@@ -1,0 +1,18 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: tools/builtIn/HalfAdder.hdl
+
+/**
+ * Half adder. Computes sum, the least significnat bit of a + b,
+ * and carry, the most significnat bit of a + b.
+ */
+
+CHIP HalfAdder {
+
+    IN  a, b;
+    OUT sum,   // LSB of a + b
+        carry; // MSB of a + b
+
+    BUILTIN HalfAdder;
+}

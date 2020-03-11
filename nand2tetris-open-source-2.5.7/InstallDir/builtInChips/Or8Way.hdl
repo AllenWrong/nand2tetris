@@ -1,0 +1,16 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: tools/builtIn/Or8Way.hdl
+
+/**
+ * 8-way Or gate.  out = in[0] or in[1] or ... or in[7]
+ */
+ 
+CHIP Or8Way {
+
+    IN  in[8];
+    OUT out;
+
+    BUILTIN Or8Way;
+}

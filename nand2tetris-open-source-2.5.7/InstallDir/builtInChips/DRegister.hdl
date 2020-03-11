@@ -1,0 +1,24 @@
+// This file is part of the materials accompanying the book
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: tools/builtIn/DRegister.hdl
+
+/**
+ * A 16-Bit register called "D Register". 
+ * If load[t-1]=1 then out[t] = in[t-1]
+ * else out does not change (out[t] = out[t-1])
+ *
+ * This built-in chip implementation has the side effect of 
+ * providing a GUI representation of a 16-bit register
+ * called "D register" (typically used to store data).
+ */
+
+CHIP DRegister {
+
+    IN  in[16], load;
+    OUT out[16];
+
+    BUILTIN DRegister;
+    CLOCKED in, load;
+}
+

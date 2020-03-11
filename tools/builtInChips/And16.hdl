@@ -1,0 +1,17 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: tools/builtIn/And16.hdl
+
+/**
+ * 16-bit-wise And gate: for i = 0..15: out[i] = a[i] and b[i]
+ */
+
+CHIP And16 {
+
+    IN  a[16], b[16];
+    OUT out[16];
+
+    BUILTIN And;
+}
+

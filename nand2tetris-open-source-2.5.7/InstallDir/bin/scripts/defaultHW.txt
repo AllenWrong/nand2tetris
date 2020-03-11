@@ -1,0 +1,4 @@
+repeat {
+    tick,
+    tock;
+}

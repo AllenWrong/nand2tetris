@@ -1,0 +1,19 @@
+// This file is part of the materials accompanying the book
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: tools/builtIn/Register.hdl
+
+/**
+ * 16-Bit register. 
+ * If load[t-1]=1 then out[t] = in[t-1]
+ * else out does not change (out[t] = out[t-1])
+ */
+
+CHIP Register {
+
+    IN  in[16], load;
+    OUT out[16];
+
+    BUILTIN Register;
+    CLOCKED in, load;
+}

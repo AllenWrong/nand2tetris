@@ -1,0 +1,9 @@
+Jack Compiler, Version 2.5
+
+This program is part of www.nand2tetris.org
+and the book "The Elements of Computing Systems"
+by Nisan and Schocken, MIT Press.
+
+Software Architects: Yaron Ukrainitz and Yannai A. Gonczarowski
+
+Usage instruction and tips can be found in the relevant book chapters.

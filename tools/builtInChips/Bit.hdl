@@ -1,0 +1,19 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: tools/builtIn/Bit.hdl
+
+/**
+ * 1-bit register.
+ * If load[t] == 1 then out[t+1] = in[t]
+ *                 else out[t+1] = out[t] (no change)
+ */
+
+CHIP Bit {
+
+    IN  in, load;
+    OUT out;
+
+    BUILTIN Bit;
+    CLOCKED in, load;
+}

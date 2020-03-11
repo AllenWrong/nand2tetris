@@ -1,0 +1,17 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: tools/builtIn/DMux.hdl
+
+/** 
+ * Demultiplexer. If sel = 0 then {a = in; b = 0} else {a = 0; b = in}
+ */
+ 
+CHIP DMux {
+
+    IN  in, sel;
+    OUT a, b;
+
+    BUILTIN DMux;
+}
+

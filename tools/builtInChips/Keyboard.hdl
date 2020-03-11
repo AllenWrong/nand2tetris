@@ -1,0 +1,23 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: tools/builtIn/Keyboard.hdl
+
+/**
+ * The keyboard (memory map).
+ * Outputs the code of the currently pressed key.
+ *
+ * The built-in chip implementation has two side effects supplied 
+ * by the simulator. First, the keyboard memory map is continuously 
+ * being refreshed from the physical keyboard unit. Second, it 
+ * displays a keyboard icon and data entry GUI.
+ */
+
+CHIP Keyboard {
+
+    OUT out[16];   // The ASCII code of the pressed key, 
+                   // or 0 if no key is currently pressed, 
+                   // or one the special codes listed in Figure 5.5.
+
+    BUILTIN Keyboard;
+}

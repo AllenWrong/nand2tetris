@@ -1,0 +1,30 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: tools/builtIn/ROM32K.hdl
+
+/**
+ * Read-Only memory (ROM) of 16K registers, each 16-bit wide.
+ * The chip is designed to facilitate data read, as follows:
+ *     out(t) = ROM32K[address(t)](t)
+ * In words: the chip always outputs the value stored at the 
+ * memory location specified by address.
+ *
+ * The built-in chip implementation has a GUI side-effect, 
+ * showing an array-like component that displays the ROM's 
+ * contents. The ROM32K chip is supposed to be pre-loaded with 
+ * a machine language program. To that end, the built-in chip
+ * implementation also knows how to handle the "ROM32K load Xxx"
+ * script command, where Xxx is the name of a text file containing 
+ * a program written in the Hack machine language.  When the 
+ * simulator encounters such a command in a test script, the code 
+ * found in the file is loaded into the simulated ROM32K unit.
+ */
+
+CHIP ROM32K {
+
+    IN  address[15];
+    OUT out[16];
+
+    BUILTIN ROM32K;
+}

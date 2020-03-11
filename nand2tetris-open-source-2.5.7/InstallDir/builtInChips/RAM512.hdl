@@ -1,0 +1,24 @@
+// This file is part of the materials accompanying the book
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: tools/builtIn/RAM512.hdl
+
+/**
+ * Memory of 512 registers, each 16-bit wide.  
+ * The chip facilitates read and write operations, as follows:
+ *     Read:  out(t) = RAM512[address(t)](t)
+ *     Write: If load(t-1) then RAM512[address(t-1)](t) = in(t-1)
+ * In words: the chip always outputs the value stored at the memory 
+ * location specified by address. If load=1, the in value is loaded 
+ * into the memory location specified by address.  This value becomes 
+ * available through the out output starting from the next time step.
+ */
+
+CHIP RAM512 {
+
+    IN  in[16], load, address[9];
+    OUT out[16];
+
+    BUILTIN RAM512;
+    CLOCKED in, load;
+}

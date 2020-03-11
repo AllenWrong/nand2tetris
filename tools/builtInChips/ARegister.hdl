@@ -1,0 +1,24 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: tools/builtIn/ARegister.hdl
+
+/**
+ * A 16-Bit register called "A Register". 
+ * If load[t-1]=1 then out[t] = in[t-1]
+ * else out does not change (out[t] = out[t-1])
+ *
+ * This built-in chip implementation has the side effect of 
+ * providing a GUI representation of a 16-bit register
+ * called "A register" (typically used to store an address).
+ */
+
+CHIP ARegister {
+
+    IN  in[16], load;
+    OUT out[16];
+
+    BUILTIN ARegister;
+    CLOCKED in, load;
+}
+

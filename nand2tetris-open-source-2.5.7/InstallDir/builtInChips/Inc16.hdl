@@ -1,0 +1,18 @@
+// This file is part of the materials accompanying the book
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: tools/builtIn/Inc16.hdl
+
+/**
+ * 16-bit incrementer.  out = in + 1 (16-bit addition).
+ * Overflow is neither detected nor handled.
+ */
+
+CHIP Inc16 {
+
+    IN  in[16];
+    OUT out[16];
+
+    BUILTIN Inc16;
+}
+

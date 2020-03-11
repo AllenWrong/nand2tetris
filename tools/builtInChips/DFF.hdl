@@ -1,0 +1,18 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: tools/builtIn/DFF.hdl
+
+/**
+ * Data Flip-flop: out(t) = in(t-1) 
+ * where t is the current time unit, or clock cycle.
+ */
+
+CHIP DFF {
+
+    IN  in;
+    OUT out;
+
+    BUILTIN DFF;
+    CLOCKED in;
+}

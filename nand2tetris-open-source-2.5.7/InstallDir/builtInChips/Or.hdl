@@ -1,0 +1,16 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: tools/builtIn/Or.hdl
+
+/**
+ * Or gate. out = a or b
+ */
+
+CHIP Or {
+
+    IN  a, b;
+    OUT out;
+
+    BUILTIN Or;
+}
