@@ -1,0 +1,9 @@
+See Chapter 13. It's your call!
+
+And, if you develop something cool, please let us know about it.
+
+We hope that you enjoyed the course!
+
+-- Noam and Shimon
+
+www.nand2tetris.org
