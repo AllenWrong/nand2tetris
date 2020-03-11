@@ -1,0 +1,31 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/SysTest/Main.jack
+
+/** Test program for the OS Sys class. */
+class Main {
+
+    /** Tests the wait method of the Sys class. */
+    function void main() {
+        var char key;
+
+        do Output.printString("Wait test:");
+        do Output.println();
+        do Output.printString("Press any key. After 2 seconds, another message will be printed:");
+
+        while (key = 0) {
+	        let key = Keyboard.keyPressed();
+        }
+        while (~(key = 0)) {
+            let key = Keyboard.keyPressed();
+        }
+        
+        do Sys.wait(2000);
+
+        do Output.println();
+        do Output.printString("Time is up. Make sure that 2 seconds elapsed.");
+        
+        return;
+    }
+}

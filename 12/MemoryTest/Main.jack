@@ -1,0 +1,42 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/MemoryTest/Main.jack
+
+/** Test program for the OS Memory class. */
+class Main {
+
+    /** Performs various memory manipulations. */
+    function void main() {
+        var int temp;
+        var Array a, b, c;
+        
+        do Memory.poke(8000, 333);       // RAM[8000] = 333
+        let temp = Memory.peek(8000);
+        do Memory.poke(8001, temp + 1);  // RAM[8001] = 334
+        
+        let a = Array.new(3);            // uses Memory.alloc
+        let a[2] = 222;
+        do Memory.poke(8002, a[2]);      // RAM[8002] = 222
+        
+        let b = Array.new(3);
+        let b[1] = a[2] - 100;
+        do Memory.poke(8003, b[1]);       // RAM[8003] = 122
+        
+        let c = Array.new(500);
+        let c[499] = a[2] - b[1];
+        do Memory.poke(8004, c[499]);     // RAM[8004] = 100
+        
+        do a.dispose();                   // uses Memory.deAlloc
+        do b.dispose();
+        
+        let b = Array.new(3);
+        let b[0] = c[499] - 90;
+        do Memory.poke(8005, b[0]);       // RAM[8005] = 10
+        
+        do c.dispose();
+        do b.dispose();
+        
+        return;
+    }
+}

@@ -1,0 +1,131 @@
+function Main.main 4
+push constant 8000
+pop local 0
+push constant 3
+call Array.new 1
+pop local 1
+push constant 2
+push local 1
+add
+push constant 222
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push local 0
+add
+push constant 2
+push local 1
+add
+pop pointer 1
+push that 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+call Array.new 1
+pop local 2
+push constant 1
+push local 2
+add
+push constant 2
+push local 1
+add
+pop pointer 1
+push that 0
+push constant 100
+sub
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 1
+push local 2
+add
+pop pointer 1
+push that 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 500
+call Array.new 1
+pop local 3
+push constant 499
+push local 3
+add
+push constant 2
+push local 1
+add
+pop pointer 1
+push that 0
+push constant 1
+push local 2
+add
+pop pointer 1
+push that 0
+sub
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 499
+push local 3
+add
+pop pointer 1
+push that 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 1
+call Array.dispose 1
+pop temp 0
+push local 2
+call Array.dispose 1
+pop temp 0
+push constant 3
+call Array.new 1
+pop local 2
+push constant 0
+push local 2
+add
+push constant 499
+push local 3
+add
+pop pointer 1
+push that 0
+push constant 90
+sub
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 0
+push local 2
+add
+pop pointer 1
+push that 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 3
+call Array.dispose 1
+pop temp 0
+push local 2
+call Array.dispose 1
+pop temp 0
+push constant 0
+return

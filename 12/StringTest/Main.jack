@@ -1,0 +1,83 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/StringTest/Main.jack
+
+/** Test program for the OS String class. */
+class Main {
+
+    /** Performs various string manipulations and displays their results. */
+    function void main() {
+        var String s;
+        var String i;
+        
+        let s = String.new(0); // a zero-capacity string should be supported
+        do s.dispose();
+
+        let s = String.new(6); // capacity 6, make sure that length 5 is displayed
+        let s = s.appendChar(97);
+        let s = s.appendChar(98);
+        let s = s.appendChar(99);
+        let s = s.appendChar(100);
+        let s = s.appendChar(101);
+        do Output.printString("new,appendChar: ");
+        do Output.printString(s);                // new, appendChar: abcde
+        do Output.println();
+    
+        let i = String.new(6);
+        do i.setInt(12345);
+        do Output.printString("setInt: ");
+        do Output.printString(i);                // setInt: 12345
+        do Output.println();
+
+        do i.setInt(-32767);
+        do Output.printString("setInt: ");
+        do Output.printString(i);                // setInt: -32767
+        do Output.println();
+        
+        do Output.printString("length: ");
+        do Output.printInt(s.length());          // length: 5
+        do Output.println();
+        
+        do Output.printString("charAt[2]: ");
+        do Output.printInt(s.charAt(2));         // charAt[2]: 99
+        do Output.println();
+        
+        do s.setCharAt(2, 45);
+        do Output.printString("setCharAt(2,'-'): ");     
+        do Output.printString(s);                // setCharAt(2,'-'): ab-de
+        do Output.println();
+        
+        do s.eraseLastChar();        
+        do Output.printString("eraseLastChar: ");     
+        do Output.printString(s);                // eraseLastChar: ab-d
+        do Output.println();
+        
+        let s = "456";
+        do Output.printString("intValue: ");
+        do Output.printInt(s.intValue());        // intValue: 456
+        do Output.println();
+        
+        let s = "-32123";
+        do Output.printString("intValue: ");
+        do Output.printInt(s.intValue());        // intValue: -32123
+        do Output.println();
+        
+        do Output.printString("backSpace: ");
+        do Output.printInt(String.backSpace());  // backSpace: 129
+        do Output.println();
+        
+        do Output.printString("doubleQuote: ");
+        do Output.printInt(String.doubleQuote());// doubleQuote: 34
+        do Output.println();
+        
+        do Output.printString("newLine: ");
+        do Output.printInt(String.newLine());    // newLine: 128
+        do Output.println();
+        
+        do i.dispose();
+        do s.dispose();
+
+        return;
+    }
+}

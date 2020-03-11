@@ -1,0 +1,126 @@
+function Main.main 4
+push constant 8000
+push constant 333
+call Memory.poke 2
+pop temp 0
+push constant 8000
+call Memory.peek 1
+pop local 0
+push constant 8001
+push local 0
+push constant 1
+add
+call Memory.poke 2
+pop temp 0
+push constant 3
+call Array.new 1
+pop local 1
+push constant 2
+push local 1
+add
+push constant 222
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8002
+push constant 2
+push local 1
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push constant 3
+call Array.new 1
+pop local 2
+push constant 1
+push local 2
+add
+push constant 2
+push local 1
+add
+pop pointer 1
+push that 0
+push constant 100
+sub
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8003
+push constant 1
+push local 2
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push constant 500
+call Array.new 1
+pop local 3
+push constant 499
+push local 3
+add
+push constant 2
+push local 1
+add
+pop pointer 1
+push that 0
+push constant 1
+push local 2
+add
+pop pointer 1
+push that 0
+sub
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8004
+push constant 499
+push local 3
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 1
+call Array.dispose 1
+pop temp 0
+push local 2
+call Array.dispose 1
+pop temp 0
+push constant 3
+call Array.new 1
+pop local 2
+push constant 0
+push local 2
+add
+push constant 499
+push local 3
+add
+pop pointer 1
+push that 0
+push constant 90
+sub
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8005
+push constant 0
+push local 2
+add
+pop pointer 1
+push that 0
+call Memory.poke 2
+pop temp 0
+push local 3
+call Array.dispose 1
+pop temp 0
+push local 2
+call Array.dispose 1
+pop temp 0
+push constant 0
+return

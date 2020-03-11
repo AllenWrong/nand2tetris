@@ -1,0 +1,40 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/ArrayTest/Main.jack
+
+/** Test program for the OS Array class. */
+class Main {
+
+    /** Performs several Array manipulations. */
+    function void main() {
+        var Array r;                  // stores test results
+        var Array a, b, c;
+        
+        let r = 8000;
+        
+        let a = Array.new(3);
+        let a[2] = 222;
+        let r[0] = a[2];              // RAM[8000] = 222
+        
+        let b = Array.new(3);
+        let b[1] = a[2] - 100;
+        let r[1] = b[1];              // RAM[8001] = 122
+        
+        let c = Array.new(500);
+        let c[499] = a[2] - b[1];
+        let r[2] = c[499];            // RAM[8002] = 100
+        
+        do a.dispose();
+        do b.dispose();
+        
+        let b = Array.new(3);
+        let b[0] = c[499] - 90;
+        let r[3] = b[0];              // RAM[8003] = 10
+        
+        do c.dispose();
+        do b.dispose();
+        
+        return;
+    }
+}

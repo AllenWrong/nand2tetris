@@ -1,0 +1,114 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Memory.jack
+
+/**
+ * This library provides two services: direct access to the computer's main
+ * memory (RAM), and allocation and recycling of memory blocks. The Hack RAM
+ * consists of 32,768 words, each holding a 16-bit binary number.
+ */ 
+class Memory {
+	static Array memory;
+	static int heapBase;
+	static int freeList;
+	static int listEnd;     // Generally, it is the lastSegment+1;
+	
+    /** Initializes the class. */
+    function void init() {
+		let heapBase = 2048;
+		let freeList = heapBase;
+		let memory[freeList] = 14336;
+		let freeList[1] = null;
+		let listEnd = freeList+1;
+		return;
+	}
+
+    /** Returns the RAM value at the given address. */
+    function int peek(int address) {
+		return memory[address];
+	}
+
+    /** Sets the RAM value at the given address to the given value. */
+    function void poke(int address, int value) {
+		let memory[address] = value;
+		return;
+	}
+
+    /** Finds an available RAM block of the given size and returns
+     *  a reference to its base address. */
+    function int alloc(int size) {
+		var int bestAdd, curSize, p, q;
+		var boolean end;
+		
+		let p = freeList;
+		let q = memory[p[1]];
+		let curSize = memory[freeList];
+		if(p[1]=null){
+			let bestAdd = p+memory[p]-size;
+			let memory[freeList] = memory[freeList]-size-1;
+			let bestAdd[-1] = size+1;
+			return bestAdd;
+		}
+		
+		let bestAdd = -1;
+		let end = false;
+		/** Search */
+		while(~(q[0] = null) & ~end){
+			/** 
+			 * Note the condition "(memory[p] > size)". In fact the best case is memory[p] = size+1.
+			 * The first unit of the segment is used to memory the length.
+			 */
+			if((memory[q] > size) & ~(memory[q] > curSize)){
+				let curSize = memory[q];
+				let bestAdd = q+1;
+			}
+			
+			/** Sometimes this can reduce some unnecessary loop. */
+			if(memory[q] = (size+1)){
+				let end = true;
+			}
+			if(~end){
+				let p = p[1];
+				let q = q[1];
+			}
+		}
+		/** Don't find the segment.*/
+		if(bestAdd = -1){
+			return bestAdd;
+		}
+		
+		if(end){
+			let bestAdd[-1]=size+1;
+			let p[1]=q[1];
+		}else{
+		    let bestAdd[-1] = size+1;
+			let bestAdd = q+memory[q]-size;
+			let memory[q] = q-size-1;
+		}
+		return bestAdd;
+    }
+
+    /** De-allocates the given object (cast as an array) by making
+     *  it available for future allocations. */
+    function void deAlloc(Array o) {
+		/** 
+		 * As we all know, the "o" is a dress. And when the os allocates 
+		 * this segment to it, the o is not the start address of this 
+		 * segment, the first address of this segment is used to store
+		 * the length of this segment;
+		 * we use "o-1" to get the first address of this segment, in another
+		 * words it is the segment. And after that, we can get the length of
+		 * this segment by memory[segment] or in a simple way by 0[-1].
+		 */
+		// the segment start address; the handle pointer.
+		var int segment, p;
+		let segment = o-1;
+		let segment[1] = null;
+		let listEnd = segment;
+		
+		// Update the listEnd.
+		let listEnd = segment+1;
+		return;
+	}    
+}

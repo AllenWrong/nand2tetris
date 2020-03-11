@@ -1,0 +1,77 @@
+function Sys.init 0
+call Math.init 0
+pop temp 0
+call Output.init 0
+pop temp 0
+call Screen.init 0
+pop temp 0
+call Keyboard.init 0
+pop temp 0
+call Memory.init 0
+pop temp 0
+call Main.main 0
+pop temp 0
+call Sys.halt 0
+pop temp 0
+push constant 0
+return
+function Sys.halt 0
+label WHILE_EXP0
+push constant 0
+not
+not
+if-goto WHILE_END0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Sys.wait 2
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push argument 0
+gt
+not
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push constant 250
+lt
+not
+if-goto WHILE_END1
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Sys.error 0
+push constant 3
+call String.new 1
+push constant 69
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push argument 0
+call Output.printInt 1
+pop temp 0
+call Sys.halt 0
+pop temp 0
+push constant 0
+return

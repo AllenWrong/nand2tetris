@@ -1,0 +1,170 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Screen.jack
+
+/**
+ * A library of functions for displaying graphics on the screen.
+ * The Hack physical screen consists of 512 rows (indexed 0..511, top to bottom)
+ * of 256 pixels each (indexed 0..255, left to right). The top left pixel on 
+ * the screen is indexed (0,0).
+ */
+class Screen {
+	// The basic address of the screen segment.
+	static Array screen;
+	// Black for true, white for false.
+	static boolean color;
+
+    /** Initializes the Screen. */
+    function void init() {
+		let screen = 16384;
+		let color = true;
+		return;
+    }
+
+    /** Erases the entire screen. */
+    function void clearScreen() {
+		var int i;
+        let i = 0;
+        while(i < 8192){
+            let screen[i] = false;
+        }
+        return;
+	}
+
+    /** Sets the current color, to be used for all subsequent drawXXX commands.
+     *  Black is represented by true, white by false. */
+    function void setColor(boolean b) {
+		let color = b;
+		return;
+    }
+
+    /** Draws the (x,y) pixel, using the current color. */
+    function void drawPixel(int x, int y) {
+        var int address,mask;
+	
+		// Compute the address of the current bit.
+        let address = (y * 32) + (x / 16);
+        // Get the bit of the pixel.
+		let mask = Math.twoToThe(x & 15);
+
+		// Set color.
+        if(color){
+            let screen[address] = screen[address] | mask;
+        }else{
+            let screen[address] = screen[address] & ~mask;
+        }
+        return;
+    }
+
+    /** Draws a line from pixel (x1,y1) to pixel (x2,y2), using the current color. */
+    function void drawLine(int x1, int y1, int x2, int y2) {
+		/**
+		 * a: the distance of x has moved.
+		 * b: the distance of y has moved.
+		 * a++ or b++ is accroding to the condition b/a>dy/dx
+		 * make some change: diff=a*dy-b*dx. 
+		 */
+		var int a,b,diff,dx,dy;
+		
+		let dx = x2-x1;
+		let dy = y2-y1;
+		let a=0;
+		let b=0;
+		let diff=a*dy-b*dx;
+		
+		if((dx>0) & (dy>0)){
+			while(~(a>dx)&~(b>dy)){
+				do Screen.drawPixel(x1+a,y1+b);
+				if(diff<0) {let a=a+1; let diff=diff+dy;}
+				else       {let b=b+1; let diff=diff-dx;}
+			}
+			return;
+		}
+		
+		if((dx=0) & (dy>0)){
+			while(~(b>dy)){
+				do Screen.drawPixel(x1,y1+b);
+				let b=b+1;			
+			}
+			return;
+		}
+		
+		if((dx=0) & (dy<0)){
+			while(~(b>Math.abs(dy))){
+				do Screen.drawPixel(x2,y2+b);
+				let b=b+1;
+			}
+			return;
+		}
+		if((dx<0) & (dy=0)){
+			while(~(a>Math.abs(dx))){
+				do Screen.drawPixel(x2+a,y2);
+				let a=a+1;
+			}
+			return;
+		}
+		if((dx>0) & (dy=0)){
+			while(~(a>dx)){
+				do Screen.drawPixel(x1+a,y1);
+				let a=a+1;
+			}
+			return;
+		}
+		if((dx>0) & (dy<0)){
+			while(~(a>dx) & ~(b>Math.abs(dy))){
+				do Screen.drawPixel(x1+a,y1-b);
+				if(diff<0) {let a=a+1; let diff=diff+Math.abs(dy);}
+				else       {let b=b+1; let diff=diff-dx;}
+			}
+			return;
+		}
+		if((dx<0) & (dy>0)){
+			while(~(a>Math.abs(dx)) & ~(b>dy)){
+				do Screen.drawPixel(x1-a,y1+b);
+				if(diff<0) {let a=a+1; let diff=diff+dy;}
+				else       {let b=b+1; let diff=diff-Math.abs(dx);}
+			}
+			return;
+		}
+		if((dx<0) & (dy<0)){
+			while(~(a>Math.abs(dx)) & ~(b>Math.abs(dy))){
+				do Screen.drawPixel(x1-a,y1-b);
+				if(diff<0) {let a=a+1; let diff=diff+Math.abs(dy);}
+				else       {let b=b+1; let diff=diff-Math.abs(dx);}
+			}
+			return;
+		}
+		if((dx=0)&(dy=0)){
+			do Screen.drawPixel(x1,y1);
+			return;
+		}
+		return;
+    }
+
+    /** Draws a filled rectangle whose top left corner is (x1, y1)
+     * and bottom right corner is (x2,y2), using the current color. */
+    function void drawRectangle(int x1, int y1, int x2, int y2) {
+		while(~(x1>x2)){
+			do Screen.drawLine(x1,y1,x1,y2);
+			let x1=x1+1;
+		}
+		return;
+	}
+
+    /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
+    function void drawCircle(int x, int y, int r) {
+		var int dy;
+		var int x1,x2,y1;
+		
+		let dy = -r;
+		while(~(dy>r)){
+			let x1 = x-Math.sqrt((r*r)-(dy*dy));
+			let x2 = x+Math.sqrt((r*r)-(dy*dy));
+			let y1 = y+dy;
+			do Screen.drawLine(x1,y1,x2,y1);
+			let dy=dy+1;
+		}
+		return;
+    }
+}

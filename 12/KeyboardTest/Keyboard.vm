@@ -1,0 +1,82 @@
+function Keyboard.init 0
+push constant 24576
+pop static 0
+push constant 0
+return
+function Keyboard.keyPressed 0
+push constant 0
+push static 0
+add
+pop pointer 1
+push that 0
+return
+function Keyboard.readChar 1
+label WHILE_EXP0
+call Keyboard.keyPressed 0
+push constant 0
+eq
+not
+if-goto WHILE_END0
+goto WHILE_EXP0
+label WHILE_END0
+call Keyboard.keyPressed 0
+pop local 0
+label WHILE_EXP1
+call Keyboard.keyPressed 0
+push constant 0
+eq
+not
+not
+if-goto WHILE_END1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+call Output.printChar 1
+pop temp 0
+push local 0
+return
+function Keyboard.readLine 2
+push argument 0
+call Output.printString 1
+pop temp 0
+push constant 50
+call String.new 1
+pop local 0
+call Keyboard.readChar 0
+pop local 1
+label WHILE_EXP0
+push local 1
+call String.newLine 0
+eq
+not
+not
+if-goto WHILE_END0
+push local 1
+call String.backSpace 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+call String.eraseLastChar 1
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push local 0
+push local 1
+call String.appendChar 2
+pop temp 0
+label IF_END0
+call Keyboard.readChar 0
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
+function Keyboard.readInt 1
+push argument 0
+call Keyboard.readLine 1
+pop local 0
+push local 0
+call String.intValue 1
+return

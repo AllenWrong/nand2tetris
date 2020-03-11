@@ -1,0 +1,93 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/KeyboardTest/Main.jack
+
+/** Test program for the OS Keyboard class. */
+class Main {
+
+    /** Gets input from the user and verifies its contents. */
+    function void main() {
+    	var char c, key;
+    	var String s;
+    	var int i;
+    	var boolean ok;
+    
+        let ok = false;
+        do Output.printString("keyPressed test:");
+        do Output.println();
+        while (~ok) {
+            do Output.printString("Please press the 'Page Down' key");
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+            }
+            let c = key;
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+            }
+        
+            do Output.println();
+        
+            if (c = 137) {
+       	        do Output.printString("ok");
+	            do Output.println();
+	            let ok = true;
+	        }
+	    }
+	
+	    let ok = false;
+        do Output.printString("readChar test:");
+        do Output.println();
+        do Output.printString("(Verify that the pressed character is echoed to the screen)");
+        do Output.println();
+        while (~ok) {
+            do Output.printString("Please press the number '3': ");
+    	    let c = Keyboard.readChar();
+        
+            do Output.println();
+        
+            if (c = 51) {
+	            do Output.printString("ok");
+	            do Output.println();
+	            let ok = true;
+	        }
+	    }
+	
+    	let ok = false;
+        do Output.printString("readLine test:");
+        do Output.println();
+        do Output.printString("(Verify echo and usage of 'backspace')");
+        do Output.println();
+        while (~ok) {
+    	    let s = Keyboard.readLine("Please type 'JACK' and press enter: ");
+
+	        if (s.length() = 4) {
+	            if ((s.charAt(0) = 74) & (s.charAt(1) = 65) & (s.charAt(2) = 67) & (s.charAt(3) = 75)) {
+	                do Output.printString("ok");
+   	                do Output.println();
+   	                let ok = true;
+   	            }
+    	    }
+    	}
+
+	    let ok = false;
+        do Output.printString("readInt test:");
+        do Output.println();
+        do Output.printString("(Verify echo and usage of 'backspace')");
+        do Output.println();
+        while (~ok) {
+  	        let i = Keyboard.readInt("Please type '-32123' and press enter: ");
+
+	        if (i = (-32123)) {
+	            do Output.printString("ok");
+	            do Output.println();
+	            let ok = true;
+	        }
+	    }
+        
+        do Output.println();
+        do Output.printString("Test completed successfully");
+        
+        return;
+    }
+}
