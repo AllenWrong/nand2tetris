@@ -1,4 +1,7 @@
 # 计算机系统要素，从零开始构建现代计算机（nand2tetris）
+
+不要忘了给个Star~~~
+
 课程官网：https://www.nand2tetris.org//
 
 相关评论：https://book.douban.com/review/7115224/
