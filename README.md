@@ -2,7 +2,7 @@
 
 **不要忘了给个Star~~~**
 
-课程官网：https://www.nand2tetris.org//
+课程官网：https://www.nand2tetris.org/
 
 相关评论：https://book.douban.com/review/7115224/
 
@@ -32,7 +32,7 @@ CSDN关于实现的具体介绍：https://blog.csdn.net/qq_41634283/article/deta
 - 增量器
 - ALU
 
-#### 3、时序逻辑<br/
+#### 3、时序逻辑<br/>
 - 1bit寄存器，16bit寄存器
 - RAM8，RAM64，RAM512，RAM4K，RAM16K
 - 程序计数器PC
