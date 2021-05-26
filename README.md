@@ -20,7 +20,7 @@ CSDN关于实现的具体介绍：https://blog.csdn.net/qq_41634283/article/deta
 
 ## 小项目展示
 
-![](./resources/hackenstein3D.gif)
+<img src="./resources/hackenstein3D.gif" width="700" height="500">
 
 ## 章节内容简介
 #### 1、布尔逻辑
