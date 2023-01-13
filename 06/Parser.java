@@ -77,9 +77,8 @@ public class Parser {
 			return false;
 		}
 		/* Remove the comment line*/
-		String head = stringLine.substring(0, 2);  // get the first two characters
 		String headChar = stringLine.trim().substring(0,2); // get the first two characters
-		if(head.equals("//") || headChar.equals("//")) {
+		if(headChar.equals("//")) {
 			return false;
 		}
 		/* Throw the comment away*/
