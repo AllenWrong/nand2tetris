@@ -3,7 +3,10 @@ package com.module;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.FileNotFoundException;
 
 /**
  * 
@@ -18,11 +21,13 @@ public class Parser {
 	String currentCommand;
 	/** count the address of the instructions*/
 	int address = 0;
+	List<String> validInstructionSet;
 	
 	/** Constructor*/
-	public Parser(File file, FileInputStream fiStream) {
-		this.file=file;
-		this.scanner = new Scanner(fiStream);
+	public Parser(File file) throws FileNotFoundException {
+		this.file = file;
+		this.scanner = new Scanner(new FileInputStream(this.file));
+		validInstructionSet = new ArrayList<>();
 	}
 	
 	/**
@@ -30,9 +35,9 @@ public class Parser {
 	 * @return true or false
 	 */
 	public boolean hasMoreCommands() {
-		if(this.scanner.hasNextLine()) {
+		if (this.scanner.hasNextLine()) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
@@ -41,22 +46,23 @@ public class Parser {
 	 * get a new line
 	 */
 	public void advance() {
-		if(hasMoreCommands()) {
-			/* when we don't get the command loop*/
-			do{
+		if (hasMoreCommands()) {
+			/* when we don't get the command, loop*/
+			do {
 				this.currentCommand = this.scanner.nextLine();
-			}while(!getCommand());
+			} while (!getCommand());
 			// when we get a a-command or c-command, let the address++;
-			if(this.commandType().equals(CommandType.A_COMMAND) || this.commandType().equals(CommandType.C_COMMAND)) {
+			if (this.commandType().equals(CommandType.A_COMMAND) || this.commandType().equals(CommandType.C_COMMAND)) {
 				this.address++;
 			}
-		}else {
+			validInstructionSet.add(this.currentCommand);
+		} else {
 			this.scanner.close();
 		}
 	}
 	
 	/**
-	 * When we get a line, in fact it's not the command, it contains comment line,space line,space, comment.<br/>
+	 * When we get a line, in fact it's not the command, it contains comment line, space line, space, comment.<br/>
 	 * So we process those character in this method. What we should do is following:<br/>
 	 * 1. Remove the comment line. <br/>
 	 *    If we get the comment line, throw it away and read again. Sometimes, there are some space in the<br/>
@@ -70,21 +76,20 @@ public class Parser {
 	 * @return the command string
 	 * @throws IOException 
 	 */
-	private boolean getCommand(){
+	private boolean getCommand() {
 		String stringLine = this.currentCommand;
 		/* remove the space line*/
-		if(stringLine.equals("")) {
+		if (stringLine.equals("")) {
 			return false;
 		}
 		/* Remove the comment line*/
 		String headChar = stringLine.trim().substring(0,2); // get the first two characters
-		if(headChar.equals("//")) {
+		if (headChar.equals("//")) {
 			return false;
 		}
 		/* Throw the comment away*/
 		if(stringLine.contains("//")) {
-			String subStr = stringLine.substring(0, stringLine.indexOf("//"));
-			this.currentCommand = subStr.trim();
+			this.currentCommand = stringLine.substring(0, stringLine.indexOf("//")).trim();
 			return true;
 		}
 		this.currentCommand = stringLine.trim();
@@ -96,13 +101,13 @@ public class Parser {
 	 * @return command type
 	 */
 	public CommandType commandType() {
-		if(this.currentCommand.substring(0, 1).equals("@")) {
+		if (this.currentCommand.substring(0, 1).equals("@")) {
 			return CommandType.A_COMMAND;
-		}else if(this.currentCommand.substring(0, 1).equals("(")) {
+		} else if (this.currentCommand.substring(0, 1).equals("(")) {
 			return CommandType.L_COMMAND;
-		}else if(this.currentCommand.contains(";") || this.currentCommand.contains("=")) {
+		} else if (this.currentCommand.contains(";") || this.currentCommand.contains("=")) {
 			return CommandType.C_COMMAND;
-		}else {
+		} else {
 			return CommandType.UNKNOW;
 		}
 	}
@@ -113,8 +118,8 @@ public class Parser {
 	 * @return
 	 */
 	public boolean isDigit(String symbol) {
-		for(int i = 0;i<symbol.length();i++) {
-			if(!Character.isDigit(symbol.charAt(i))) {
+		for (int i = 0; i < symbol.length(); i++) {
+			if (!Character.isDigit(symbol.charAt(i))) {
 				return false;
 			}
 		}
@@ -127,7 +132,7 @@ public class Parser {
 	 * @return
 	 */
 	public String paddingZero(String str) {
-		while(str.length()<=15) {
+		while (str.length() <= 15) {
 			str="0"+str;
 		}
 		return str;
@@ -138,7 +143,7 @@ public class Parser {
 	 * @return  null
 	 * 			if the command is c command or unknown command 
 	 */
-	public String sysmbol() {
+	public String symbol() {
 		/**
 		 * basically, whatever the command is a-command or l-command, if the symbol is represented
 		 * by address, we return the binary form of the address, if the symbol is represented by
@@ -149,31 +154,26 @@ public class Parser {
 		 * When we second scan the file, if we get the binary string of the address we translate it
 		 * , if we get the string symbol we get it's address from hash table. 
 		 */
+		String subStr = null;
 		if (commandType().equals(CommandType.A_COMMAND)) {
-			String command = this.currentCommand;
-			String subStr =  command.substring(1, command.length());
-			// if the a-command is represented by address, we do the following action
-			if(isDigit(subStr)) {
-				Long address = Long.parseLong(subStr);
-				String addressStr = Long.toBinaryString(address);
-				return paddingZero(addressStr);
-			}else {
-				return subStr;
-			}
+			subStr = this.currentCommand.substring(1, this.currentCommand.length());
 		}
-		if(commandType().equals(CommandType.L_COMMAND)) {
-			String command = this.currentCommand;
-			String subStr = command.substring(1, command.length()-1);
-			// if the L-command is represented by address, we do the following action
-			if(isDigit(subStr)) {
-				Long address = Long.parseLong(subStr);
-				String addressStr = Long.toBinaryString(address);
-				return paddingZero(addressStr);
-			}else {
-				return subStr;
-			}
+		if (commandType().equals(CommandType.L_COMMAND)) {
+			subStr = this.currentCommand.substring(1, this.currentCommand.length()-1);
 		}
-		return null;
+		if (subStr == null) {
+			return null;
+		}
+		if (isDigit(subStr)) {
+			Long address = Long.parseLong(subStr);
+			if (address < 0 || address > 32767) {// 2^15 - 1
+
+			}
+			String addressStr = Long.toBinaryString(address);
+			return paddingZero(addressStr);
+		} else {
+			return subStr;
+		}
 	}
 	
 	/**
@@ -183,11 +183,11 @@ public class Parser {
 	 * 		   null if the command is not the c command
 	 */
 	public String dest() {
-		if(commandType().equals(CommandType.C_COMMAND)) {
+		if (commandType().equals(CommandType.C_COMMAND)) {
 			String command = this.currentCommand;
-			if(command.contains("=")) {
+			if (command.contains("=")) {
 				return command.substring(0, command.indexOf("="));
-			}else {
+			} else {
 				return "";
 			}
 		}
@@ -201,15 +201,15 @@ public class Parser {
 	 *		   null if the command is not the c command
 	 */
 	public String comp() {
-		if(commandType().equals(CommandType.C_COMMAND)) {
+		if (commandType().equals(CommandType.C_COMMAND)) {
 			String command = this.currentCommand;
-			if(command.contains("=") && command.contains(";")) {
+			if (command.contains("=") && command.contains(";")) {
 				return command.substring(command.indexOf("=")+1, command.indexOf(";"));
-			}else if (command.contains(";")) {
+			} else if (command.contains(";")) {
 				return command.substring(0, command.indexOf(";"));
-			}else if (command.contains("=")) {
+			} else if (command.contains("=")) {
 				return command.substring(command.indexOf("=")+1, command.length());
-			}else {
+			} else {
 				return "";
 			}
 		}
@@ -223,11 +223,11 @@ public class Parser {
 	 *         null if the command is not the c command
 	 */
 	public String jump() {
-		if(commandType().equals(CommandType.C_COMMAND)) {
+		if (commandType().equals(CommandType.C_COMMAND)) {
 			String command = this.currentCommand;
-			if(command.contains(";")) {
+			if (command.contains(";")) {
 				return command.substring(command.indexOf(";")+1, command.length());
-			}else {
+			} else {
 				return "";
 			}
 		}
