@@ -22,6 +22,11 @@ CSDN关于实现的具体介绍：https://blog.csdn.net/qq_41634283/article/deta
 
 <img src="./resources/hackenstein3D.gif" width="700" height="500">
 
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=AllenWrong/nand2tetris&type=Date)](https://star-history.com/#AllenWrong/nand2tetris&Date)
+
 ## 章节内容简介
 #### 1、布尔逻辑
 本章需要实现一下基本逻辑门电路，了解一些数字电路内容即可完成项目。都是基于Nand门（与非门）来实现的，当然在实现其他门电路的时候，可以使用已经实现的门电路。使用其他方式实现也可以<br/>
